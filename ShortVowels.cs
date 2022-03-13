@@ -1,52 +1,42 @@
-﻿using System;
+using System;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 					
-public class Program
+public class ShortVowels
 {
-	public static void Main()
-	{
-		Console.WriteLine("Hello World");
-	}
-
-    public double LongVowel(string str)
-    {
-        var t = 0.0;
-
-        return t;
-    }
+    public double minValShort{get;set;} = 0.2;
     public double ShortVowel(string str)
     {
         var t = 0.0;
 
         return t;
     }
-    public double LongA(string str)
+    public double ShortA(string str)
     {
         var t = 0.0;
 
         return t;
     }
-    public double LongI(string str)
+    public double ShortI(string str)
     {
         var t = 0.0;
 
         return t;
     }
-    public double LongU(string str)
+    public double ShortU(string str)
     {
         var t = 0.0;
 
         return t;
     }
-    public double LongE(string str)
+    public double ShortE(string str)
     {
         var t = 0.0;
 
         return t;
     }
-    public double LongO(string str)
+    public double ShortO(string str)
     {
         var t = 0.0;
 

@@ -1,15 +1,11 @@
-﻿using System;
+using System;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 					
-public class Program
+public class LongVowels
 {
-	public static void Main()
-	{
-		Console.WriteLine("Hello World");
-	}
-
+    public double minValLong{get;set;} = 0.2; 
     public double LongVowel(string str)
     {
         var t = 0.0;
