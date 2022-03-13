@@ -2,44 +2,46 @@ using System;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
-					
-public class ShortVowels
+namespace VVowels
 {
-    public double minValShort{get;set;} = 0.2;
-    public double ShortVowel(string str)
+    public class ShortVowels
     {
-        var t = 0.0;
+        public double minValShort { get; set; } = 0.2;
+        public double ShortVowel(string str)
+        {
+            var t = 0.0;
 
-        return t;
-    }
-    public double ShortA(string str)
-    {
-        var t = 0.0;
+            return t;
+        }
+        public double ShortA(string str)
+        {
+            var t = 0.0;
 
-        return t;
-    }
-    public double ShortI(string str)
-    {
-        var t = 0.0;
+            return t;
+        }
+        public double ShortI(string str)
+        {
+            var t = 0.0;
 
-        return t;
-    }
-    public double ShortU(string str)
-    {
-        var t = 0.0;
+            return t;
+        }
+        public double ShortU(string str)
+        {
+            var t = 0.0;
 
-        return t;
-    }
-    public double ShortE(string str)
-    {
-        var t = 0.0;
+            return t;
+        }
+        public double ShortE(string str)
+        {
+            var t = 0.0;
 
-        return t;
-    }
-    public double ShortO(string str)
-    {
-        var t = 0.0;
+            return t;
+        }
+        public double ShortO(string str)
+        {
+            var t = 0.0;
 
-        return t;
+            return t;
+        }
     }
 }
