@@ -1,0 +1,15 @@
+C:\Users\stevphie\Documents\GitHub\Long-Short-Vowels-Detection\bin\Debug\net6.0\Long-Short-Vowels-Detection.exe
+C:\Users\stevphie\Documents\GitHub\Long-Short-Vowels-Detection\bin\Debug\net6.0\Long-Short-Vowels-Detection.deps.json
+C:\Users\stevphie\Documents\GitHub\Long-Short-Vowels-Detection\bin\Debug\net6.0\Long-Short-Vowels-Detection.runtimeconfig.json
+C:\Users\stevphie\Documents\GitHub\Long-Short-Vowels-Detection\bin\Debug\net6.0\Long-Short-Vowels-Detection.dll
+C:\Users\stevphie\Documents\GitHub\Long-Short-Vowels-Detection\bin\Debug\net6.0\Long-Short-Vowels-Detection.pdb
+C:\Users\stevphie\Documents\GitHub\Long-Short-Vowels-Detection\obj\Debug\net6.0\Long-Short-Vowels-Detection.csproj.AssemblyReference.cache
+C:\Users\stevphie\Documents\GitHub\Long-Short-Vowels-Detection\obj\Debug\net6.0\Long-Short-Vowels-Detection.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\stevphie\Documents\GitHub\Long-Short-Vowels-Detection\obj\Debug\net6.0\Long-Short-Vowels-Detection.AssemblyInfoInputs.cache
+C:\Users\stevphie\Documents\GitHub\Long-Short-Vowels-Detection\obj\Debug\net6.0\Long-Short-Vowels-Detection.AssemblyInfo.cs
+C:\Users\stevphie\Documents\GitHub\Long-Short-Vowels-Detection\obj\Debug\net6.0\Long-Short-Vowels-Detection.csproj.CoreCompileInputs.cache
+C:\Users\stevphie\Documents\GitHub\Long-Short-Vowels-Detection\obj\Debug\net6.0\Long-Short-Vowels-Detection.dll
+C:\Users\stevphie\Documents\GitHub\Long-Short-Vowels-Detection\obj\Debug\net6.0\refint\Long-Short-Vowels-Detection.dll
+C:\Users\stevphie\Documents\GitHub\Long-Short-Vowels-Detection\obj\Debug\net6.0\Long-Short-Vowels-Detection.pdb
+C:\Users\stevphie\Documents\GitHub\Long-Short-Vowels-Detection\obj\Debug\net6.0\Long-Short-Vowels-Detection.genruntimeconfig.cache
+C:\Users\stevphie\Documents\GitHub\Long-Short-Vowels-Detection\obj\Debug\net6.0\ref\Long-Short-Vowels-Detection.dll

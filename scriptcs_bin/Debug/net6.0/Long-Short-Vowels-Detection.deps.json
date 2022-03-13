@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "Long-Short-Vowels-Detection/1.0.0": {
+        "runtime": {
+          "Long-Short-Vowels-Detection.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Long-Short-Vowels-Detection/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
