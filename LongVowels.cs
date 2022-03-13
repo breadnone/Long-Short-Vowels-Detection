@@ -10,9 +10,8 @@ namespace VVowels
 {
     public class LongVowels
     {
-        private static StringComparison sc = StringComparison.OrdinalIgnoreCase;
-        private static string path = Directory.GetCurrentDirectory() + "/dictionary/";
-        public double minValLong { get; set; } = 0.2;
+        private StringComparison sc = StringComparison.OrdinalIgnoreCase;
+        private string path = Directory.GetCurrentDirectory() + "/dictionary/";
         public virtual int vbounds { get; set; } = 2;
         public virtual int ybounds { get; set; } = 2;
 
@@ -39,7 +38,7 @@ namespace VVowels
 
                 for (int i = 0; i < wordChuncks.Length; i++)
                 {
-                    var v = LongVowelAll(wordChuncks[i], longV);
+                    var v = LongVowel(wordChuncks[i], longV);
                     formatt[i] = v.ToString("0.0000") + " || " + wordChuncks[i] + " || ";
                     tValue += v;
                 }
@@ -49,98 +48,27 @@ namespace VVowels
                 {
                     t = (tValue, String.Join(" ", formatt));
                 }
-
             }
             return t;
         }
-        private static int pathCounter = 0;
-        private static List<(string path, bool enable)> paths = new List<(string path, bool enable)>();
+        private int pathCounter = 0;
+        private List<(string path, bool enable)> paths = new List<(string path, bool enable)>();
         private string vowelComparer = string.Empty;
-        public double LongVowelAll(string str, LongVo longV)
+        public double LongVowel(string str, LongVo longV)
         {
             var val = 0.0;
 
-            LVClass lvc = new LVClass();
-
             if (paths.Count == 0)
             {
-                var fieldValues = lvc.GetType()
-                        .GetFields()
-                        .Select(field => field.GetValue(lvc))
-                        .ToList();
-
-                (string str, bool state) newInst = (string.Empty, false);
-
-                foreach (var bb in fieldValues)
-                {
-                    if (bb != null)
-                    {
-                        newInst.str = bb as string;
-                        newInst.state = false;
-                        paths.Add(newInst);
-                    }
-                }
+                PoolDictionary();
             }
             else
             {
-                //Aight, I'm just being lazy here :)
-                for (var f = 0; f < paths.Count; f++)
-                {
-                    (string estring, bool ebool) esb = (paths[f].path, false);
-                    paths[f] = esb;
-                }
-                for (var f = 0; f < paths.Count; f++)
-                {
-                    if (longV == LongVo.A)
-                    {
-                        if (paths[f].path.Contains("long-a.txt"))
-                        {
-                            (string estring, bool ebool) esb = (paths[f].path, true);
-                            paths[f] = esb;
-                            vowelComparer = "a";
-                        }
-                    }
-                    else if (longV == LongVo.I)
-                    {
-                        if (paths[f].path.Contains("long-i.txt"))
-                        {
-                            (string estring, bool ebool) esb = (paths[f].path, true);
-                            paths[f] = esb;
-                            vowelComparer = "i";
-                        }
-                    }
-                    else if (longV == LongVo.U)
-                    {
-                        if (paths[f].path.Contains("long-u.txt"))
-                        {
-                            (string estring, bool ebool) esb = (paths[f].path, true);
-                            paths[f] = esb;
-                            vowelComparer = "i";
-                        }
-                    }
-                    else if (longV == LongVo.E)
-                    {
-                        if (paths[f].path.Contains("long-e.txt"))
-                        {
-                            (string estring, bool ebool) esb = (paths[f].path, true);
-                            paths[f] = esb;
-                            vowelComparer = "e";
-                        }
-                    }
-                    else if (longV == LongVo.O)
-                    {
-                        if (paths[f].path.Contains("long-o.txt"))
-                        {
-                            (string estring, bool ebool) esb = (paths[f].path, true);
-                            paths[f] = esb;
-                            vowelComparer = "o";
-                        }
-                    }
-                }
+                SetDictionary(longV);
             }
 
-            if(!str.Contains(vowelComparer))
-                return val+=0;
+            if (!str.Contains(vowelComparer))
+                return val += 0;
 
             foreach (var fpath in paths)
             {
@@ -163,16 +91,19 @@ namespace VVowels
                             }
                             for (int i = 0; i < cutE.Length; i++)
                             {
-                                if (i + vbounds <= cutE.Length - 1)
+                                if (i + ybounds <= cutE.Length - 1)
                                 {
                                     if (i + ybounds <= cutE.Length - 1)
                                     {
-                                        var yy = cutE[i] + " " + cutE[i + 2];
-                                        Console.WriteLine(cutE[i] + "|||||||||||||||" + cutE[i + 2]);
-                                        if (str[i] == yy[0] && str[i + 2] == cutE[i + 2])
+                                        var yy = cutE[ybounds - ybounds] + " " + cutE[i + ybounds];
+                                        Console.WriteLine(cutE[ybounds - ybounds] + "|||||||||||||||" + cutE[i + ybounds]);
+                                        if (str[i] == yy[ybounds - ybounds] && str[i + ybounds] == yy[ybounds])
                                             val += 0.2;
                                     }
+                                }
 
+                                if (i + vbounds <= cutE.Length - 1)
+                                {
                                     var sInput = str.Substring(i, vbounds);
                                     var sDict = cutE.Substring(i, vbounds);
 
@@ -197,11 +128,96 @@ namespace VVowels
                 }
             }
 
+            DefaultStat();
+
+            return val / (double)100;
+        }
+
+        private void DefaultStat()
+        {
             vbounds = 2;
             ybounds = 2;
             vowelComparer = string.Empty;
 
-            return val / (double)100;
+            //Aight, tbh I'm just being lazy here :)
+            for (var f = 0; f < paths.Count; f++)
+            {
+                (string estring, bool ebool) esb = (paths[f].path, false);
+                paths[f] = esb;
+            }
+        }
+
+        private void PoolDictionary()
+        {
+            LVClass lvc = new LVClass();
+
+            var fieldValues = lvc.GetType()
+                    .GetFields()
+                    .Select(field => field.GetValue(lvc))
+                    .ToList();
+
+            (string str, bool state) newInst = (string.Empty, false);
+
+            foreach (var bb in fieldValues)
+            {
+                if (bb != null)
+                {
+                    newInst.str = bb as string;
+                    newInst.state = false;
+                    paths.Add(newInst);
+                }
+            }
+        }
+        private void SetDictionary(LongVo longV)
+        {
+            for (var f = 0; f < paths.Count; f++)
+            {
+                if (longV == LongVo.A)
+                {
+                    if (paths[f].path.Contains("long-a.txt"))
+                    {
+                        (string estring, bool ebool) esb = (paths[f].path, true);
+                        paths[f] = esb;
+                        vowelComparer = "a";
+                    }
+                }
+                else if (longV == LongVo.I)
+                {
+                    if (paths[f].path.Contains("long-i.txt"))
+                    {
+                        (string estring, bool ebool) esb = (paths[f].path, true);
+                        paths[f] = esb;
+                        vowelComparer = "i";
+                    }
+                }
+                else if (longV == LongVo.U)
+                {
+                    if (paths[f].path.Contains("long-u.txt"))
+                    {
+                        (string estring, bool ebool) esb = (paths[f].path, true);
+                        paths[f] = esb;
+                        vowelComparer = "i";
+                    }
+                }
+                else if (longV == LongVo.E)
+                {
+                    if (paths[f].path.Contains("long-e.txt"))
+                    {
+                        (string estring, bool ebool) esb = (paths[f].path, true);
+                        paths[f] = esb;
+                        vowelComparer = "e";
+                    }
+                }
+                else if (longV == LongVo.O)
+                {
+                    if (paths[f].path.Contains("long-o.txt"))
+                    {
+                        (string estring, bool ebool) esb = (paths[f].path, true);
+                        paths[f] = esb;
+                        vowelComparer = "o";
+                    }
+                }
+            }
         }
     }
 }
