@@ -14,6 +14,7 @@ namespace VVowels
         private static string path = Directory.GetCurrentDirectory() + "/dictionary/";
         public double minValLong { get; set; } = 0.2;
         public virtual int vbounds { get; set; } = 2;
+        public virtual int ybounds { get; set; } = 2;
 
         public (double value, string vFormatValue) VLongVowel(string str, LongVo longV)
         {
@@ -54,6 +55,7 @@ namespace VVowels
         }
         private static int pathCounter = 0;
         private static List<(string path, bool enable)> paths = new List<(string path, bool enable)>();
+        private string vowelComparer = string.Empty;
         public double LongVowelAll(string str, LongVo longV)
         {
             var val = 0.0;
@@ -95,6 +97,7 @@ namespace VVowels
                         {
                             (string estring, bool ebool) esb = (paths[f].path, true);
                             paths[f] = esb;
+                            vowelComparer = "a";
                         }
                     }
                     else if (longV == LongVo.I)
@@ -103,6 +106,7 @@ namespace VVowels
                         {
                             (string estring, bool ebool) esb = (paths[f].path, true);
                             paths[f] = esb;
+                            vowelComparer = "i";
                         }
                     }
                     else if (longV == LongVo.U)
@@ -111,6 +115,7 @@ namespace VVowels
                         {
                             (string estring, bool ebool) esb = (paths[f].path, true);
                             paths[f] = esb;
+                            vowelComparer = "i";
                         }
                     }
                     else if (longV == LongVo.E)
@@ -119,6 +124,7 @@ namespace VVowels
                         {
                             (string estring, bool ebool) esb = (paths[f].path, true);
                             paths[f] = esb;
+                            vowelComparer = "e";
                         }
                     }
                     else if (longV == LongVo.O)
@@ -127,10 +133,15 @@ namespace VVowels
                         {
                             (string estring, bool ebool) esb = (paths[f].path, true);
                             paths[f] = esb;
+                            vowelComparer = "o";
                         }
                     }
                 }
             }
+
+            if(!str.Contains(vowelComparer))
+                return val+=0;
+
             foreach (var fpath in paths)
             {
                 if (File.Exists(path + fpath.path) && fpath.enable)
@@ -154,7 +165,7 @@ namespace VVowels
                             {
                                 if (i + vbounds <= cutE.Length - 1)
                                 {
-                                    if (i + 2 <= cutE.Length - 1)
+                                    if (i + ybounds <= cutE.Length - 1)
                                     {
                                         var yy = cutE[i] + " " + cutE[i + 2];
                                         Console.WriteLine(cutE[i] + "|||||||||||||||" + cutE[i + 2]);
@@ -185,7 +196,11 @@ namespace VVowels
                     }
                 }
             }
+
             vbounds = 2;
+            ybounds = 2;
+            vowelComparer = string.Empty;
+
             return val / (double)100;
         }
     }
