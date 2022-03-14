@@ -9,23 +9,40 @@ namespace VVowels
     {
         public static void Main()
         {
-            string inputStr = "velvie walks through the woods picking strawberries";
-            DetectLongVowels(inputStr);
+            Console.WriteLine("Which vowels to check? ");
+            string vowType = Console.ReadLine();
+
+            if(String.IsNullOrEmpty(vowType))
+                return;
+
+            Console.WriteLine("Enter english phrases :");
+            string inputStr = Console.ReadLine();
+
+            if(!String.IsNullOrEmpty(inputStr))
+                DetectLongVowels(inputStr, vowType);
         }
 
-        public static void DetectLongVowels(string str)
+        public static void DetectLongVowels(string str, string vow)
         {
             //Note
             //result above 0.0100 usually a good enough
             //Either way must be compared vice-versa for both Long and Short vowels
-
             var t = new LongVowels();
 
             //LongVo.I, LongVo.A, LongVo.O, LongVo.E, LongVo.U
-            var lv = LongVo.A; //Looking for long vowels 'A'
+            var lv = LongVo.A;
 
-            //2 = max bounds e.g: longString = "Unbelieveable" -> range of 3 -> |unb|nbe|bel|eli|lie|iev|eve|vea|eab|abl|ble|
-            t.vbounds = 2; //set max bounds/ OPTIONAL!
+            if(vow.Equals("a"))
+                lv = LongVo.A;
+            if(vow.Equals("i"))
+                lv = LongVo.I;
+            if(vow.Equals("u"))
+                lv = LongVo.U;
+            if(vow.Equals("e"))
+                lv = LongVo.E;
+            if(vow.Equals("o"))
+                lv = LongVo.O;
+
             var result = t.VLongVowel(str, lv);
 
             Console.WriteLine("==> Long Vowel");

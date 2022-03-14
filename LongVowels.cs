@@ -12,7 +12,7 @@ namespace VVowels
     {
         private StringComparison sc = StringComparison.OrdinalIgnoreCase;
         private string path = Directory.GetCurrentDirectory() + "/dictionary/";
-        public virtual int vbounds { get; set; } = 2;
+        public virtual int vbounds { get; set; } = 3;
         public virtual int ybounds { get; set; } = 2;
 
         public (double value, string vFormatValue) VLongVowel(string str, LongVo longV)
@@ -21,17 +21,6 @@ namespace VVowels
 
             if (!String.IsNullOrEmpty(str))
             {
-                if (str[str.Length - 1] == ' ')
-                {
-                    int e = str.Length - 2;
-                    str = str[0..e];
-                }
-                if (str[0] == ' ')
-                {
-                    int e = str.Length - 1;
-                    str = str[1..e];
-                }
-
                 var wordChuncks = str.Split(' ');
                 var formatt = new string[wordChuncks.Length];
                 double tValue = 0.0;
@@ -49,6 +38,7 @@ namespace VVowels
                     t = (tValue, String.Join(" ", formatt));
                 }
             }
+            DefaultStat();
             return t;
         }
         private int pathCounter = 0;
@@ -67,7 +57,7 @@ namespace VVowels
                 SetDictionary(longV);
             }
 
-            if (!str.Contains(vowelComparer))
+            if (!str.Contains(vowelComparer, sc))
                 return val += 0;
 
             foreach (var fpath in paths)
@@ -91,34 +81,25 @@ namespace VVowels
                             }
                             for (int i = 0; i < cutE.Length; i++)
                             {
-                                if (i + ybounds <= cutE.Length - 1)
-                                {
-                                    if (i + ybounds <= cutE.Length - 1)
-                                    {
-                                        var yy = cutE[ybounds - ybounds] + " " + cutE[i + ybounds];
-                                        Console.WriteLine(cutE[ybounds - ybounds] + "|||||||||||||||" + cutE[i + ybounds]);
-                                        if (str[i] == yy[ybounds - ybounds] && str[i + ybounds] == yy[ybounds])
-                                            val += 0.2;
-                                    }
-                                }
-
                                 if (i + vbounds <= cutE.Length - 1)
                                 {
                                     var sInput = str.Substring(i, vbounds);
                                     var sDict = cutE.Substring(i, vbounds);
+                                    
+                                    var midVow = char.ToLower(sInput[1]);
 
-                                    Console.WriteLine("AA : " + sInput);
-                                    Console.WriteLine("BB : " + sDict);
+                                    Console.WriteLine("==========> MID : " + midVow);
+                                    Console.WriteLine("IN : " + sInput);
+                                    Console.WriteLine("OU : " + sDict);
 
-                                    if (sInput.Equals(sDict, sc))
+                                    if(midVow == vowelComparer[0])
                                     {
-                                        val += 0.2;
-                                        Console.WriteLine("simillar +3 sequence match : " + sDict);
+                                        if(sInput[0] == sDict[0])
+                                        {
+                                            val += 0.2;
+                                            Console.WriteLine("+3 sequence matching : " + sDict);
+                                        }
                                     }
-                                }
-                                else
-                                {
-                                    val += 0;
                                 }
                             }
                         }
@@ -127,15 +108,13 @@ namespace VVowels
                     }
                 }
             }
-
-            DefaultStat();
-
+            
             return val / (double)100;
         }
 
         private void DefaultStat()
         {
-            vbounds = 2;
+            vbounds = 3;
             ybounds = 2;
             vowelComparer = string.Empty;
 
@@ -196,7 +175,7 @@ namespace VVowels
                     {
                         (string estring, bool ebool) esb = (paths[f].path, true);
                         paths[f] = esb;
-                        vowelComparer = "i";
+                        vowelComparer = "u";
                     }
                 }
                 else if (longV == LongVo.E)
