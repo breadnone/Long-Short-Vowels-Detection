@@ -25,7 +25,7 @@ namespace VVowels
         public static void DetectLongVowels(string str, string vow)
         {
             //Note
-            //result above 0.0100 usually a good enough
+            //results may vary depends on how many datas in a dictionary
             //Either way must be compared vice-versa for both Long and Short vowels
             var t = new LongVowels();
 

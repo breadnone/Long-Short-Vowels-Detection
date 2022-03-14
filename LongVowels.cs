@@ -99,7 +99,13 @@ namespace VVowels
                                             val += 0.2;
                                             Console.WriteLine("+3 sequence matching : " + sDict);
                                         }
+                                        else
+                                        {
+                                            val += 0.05;
+                                            Console.WriteLine("+3 sequence matching : " + sDict);
+                                        }
                                     }
+
                                 }
                             }
                         }
