@@ -7,13 +7,26 @@ namespace VVowels
 {
     public class Program
     {
+        private static bool all = false;
         public static void Main()
         {
-            Console.WriteLine("vowels of | a | i | u | e | o | to check? ");
-            string vowType = Console.ReadLine();
+            Console.WriteLine("Single(1) or ALL(2) Vowels?");
+            string sVow = Console.ReadLine();
 
-            if(String.IsNullOrEmpty(vowType))
-                return;
+            string vowType = string.Empty;
+
+            
+
+            if(sVow.Contains("1"))
+            {
+                Console.WriteLine("vowels of | a | i | u | e | o | to check? ");
+                vowType = Console.ReadLine();
+            }
+            else
+            {
+                all = true;
+                Console.WriteLine("Set for all vowels!");
+            }
 
             Console.WriteLine("Enter english phrases :");
             string inputStr = Console.ReadLine();
@@ -31,7 +44,6 @@ namespace VVowels
 
             //LongVo.I, LongVo.A, LongVo.O, LongVo.E, LongVo.U
             var lv = LongVo.A;
-
             if(vow.Equals("a"))
                 lv = LongVo.A;
             if(vow.Equals("i"))
@@ -43,11 +55,23 @@ namespace VVowels
             if(vow.Equals("o"))
                 lv = LongVo.O;
 
-            var result = t.VLongVowel(str, lv);
+            var result = (0.0, string.Empty);
+
+            if(!all)
+                result = t.VLongVowel(str, lv);
+            else
+                result = t.VLongVowel(str, lv, all);
 
             Console.WriteLine("==> Long Vowel");
-            Console.WriteLine("==> Check for vowel type : " + lv);
-            Console.WriteLine(result.vFormatValue);
+
+            if(!all)
+                Console.WriteLine("==> Check for vowel type : " + lv);
+            else
+                Console.WriteLine("==> Check for ALL Vowels");
+
+            Console.WriteLine(result.Item2);
+
+            all = false;
         } 
     }
 }
