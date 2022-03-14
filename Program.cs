@@ -9,7 +9,7 @@ namespace VVowels
     {
         public static void Main()
         {
-            Console.WriteLine("Which vowels to check? ");
+            Console.WriteLine("vowels of | a | i | u | e | o | to check? ");
             string vowType = Console.ReadLine();
 
             if(String.IsNullOrEmpty(vowType))
