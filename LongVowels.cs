@@ -57,10 +57,21 @@ namespace VVowels
         private List<(string path, bool enable)> paths = new List<(string path, bool enable)>();
         private string vowelComparer = string.Empty;
         private int counta = 0;
-        private string[] vowlsList = new string[] { "a", "i", "u", "e", "o" };
         private void AllMode(LongVo longV)
         {
             SetDictionary(longV, true);
+        }
+        public void SetActiveVowel(string strPath)
+        {
+            vowelComparer = (strPath) switch
+            {
+                var x when x.Contains("long-a.txt", sc) => "a",
+                var x when x.Contains("long-i.txt", sc) => "i",
+                var x when x.Contains("long-u.txt", sc) => "u",
+                var x when x.Contains("long-e.txt", sc) => "e",
+                var x when x.Contains("long-o.txt", sc) => "o",
+                _ => vowelComparer = string.Empty
+            };
         }
         public double LongVowel(string str, LongVo longV, bool all)
         {
@@ -83,18 +94,8 @@ namespace VVowels
             {
                 if (File.Exists(path + fpath.path) && fpath.enable)
                 {
-                    if (all)
-                    {
-                        vowelComparer = (fpath.path) switch
-                        {
-                            var x when x.Contains("long-a.txt", sc) => "a",
-                            var x when x.Contains("long-i.txt", sc) => "i",
-                            var x when x.Contains("long-u.txt", sc) => "u",
-                            var x when x.Contains("long-e.txt", sc) => "e",
-                            var x when x.Contains("long-o.txt", sc) => "o",
-                            _ => vowelComparer = string.Empty
-                        };
-                    }
+                    if (all)                    
+                        SetActiveVowel(fpath.path);
 
                     foreach (var e in File.ReadLines(path + fpath.path))
                     {
@@ -123,7 +124,6 @@ namespace VVowels
                                     {
                                         //For fun
                                         List<string> fxx = new List<string>(str.Length);
-
                                         for (int t = 0; t < str.Length; t++)
                                         {
                                             if (t + vbounds <= str.Length - 1 && !String.IsNullOrEmpty(tmpThree))
@@ -163,7 +163,6 @@ namespace VVowels
                     }
                 }
             }
-
             return val / (double)100;
         }
 

@@ -2,6 +2,8 @@ using System;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+
 namespace VVowels
 {
     public class ShortVowels
@@ -11,32 +13,32 @@ namespace VVowels
         public virtual int vbounds { get; set; } = 3;
         public virtual int ybounds { get; set; } = 2;
 
-        public (double value, string vFormatValue) VShortVowel(string str, ShortVo shortV)
+        public (double value, string vFormatValue) VShortVowel(string str, ShortVo shortV, [Optional] bool all)
         {
             var t = (0.0, string.Empty);
 
             if (!String.IsNullOrEmpty(str))
             {
-                if (str[str.Length - 1] == ' ')
-                {
-                    int e = str.Length - 2;
-                    str = str[0..e];
-                }
-                if (str[0] == ' ')
-                {
-                    int e = str.Length - 1;
-                    str = str[1..e];
-                }
-
                 var wordChuncks = str.Split(' ');
+                var dVlas = new double[wordChuncks.Length];
                 var formatt = new string[wordChuncks.Length];
+
                 double tValue = 0.0;
 
                 for (int i = 0; i < wordChuncks.Length; i++)
                 {
-                    var v = ShortVowel(wordChuncks[i], shortV);
-                    formatt[i] = v.ToString("0.0000") + " || " + wordChuncks[i] + " || ";
-                    tValue += v;
+                    if (!all)
+                    {
+                        var v = ShortVowel(wordChuncks[i], shortV, all);
+                        formatt[i] = "LV = " + v.ToString("0.0000") + " || " + wordChuncks[i] + " || ";
+                        tValue += v;
+                    }
+                    else
+                    {
+                        var v = ShortVowel(wordChuncks[i], shortV, all);
+                        dVlas[i] += v;
+                        formatt[i] = "LV = " + dVlas[i].ToString("0.0000") + " || " + wordChuncks[i] + " || ";
+                    }
                 }
 
                 //join 
@@ -45,76 +47,111 @@ namespace VVowels
                     t = (tValue, String.Join(" ", formatt));
                 }
             }
+            DefaultStat();
             return t;
         }
         private int pathCounter = 0;
         private List<(string path, bool enable)> paths = new List<(string path, bool enable)>();
         private string vowelComparer = string.Empty;
-        public double ShortVowel(string str, ShortVo shortV)
+        private int counta = 0;
+        private void AllMode(ShortVo shortVo)
+        {
+            SetDictionary(shortVo, true);
+        }
+        public void SetActiveVowel(string strPath)
+        {
+            vowelComparer = (strPath) switch
+            {
+                var x when x.Contains("short-a.txt", sc) => "a",
+                var x when x.Contains("short-i.txt", sc) => "i",
+                var x when x.Contains("short-u.txt", sc) => "u",
+                var x when x.Contains("short-e.txt", sc) => "e",
+                var x when x.Contains("short-o.txt", sc) => "o",
+                _ => vowelComparer = string.Empty
+            };
+        }
+        public double ShortVowel(string str, ShortVo shortV, bool all)
         {
             var val = 0.0;
 
             if (paths.Count == 0)
             {
-                PoolDictionary();
+                PoolDictionary(shortV, all);
             }
             else
             {
-                SetDictionary(shortV);
+                if (!all)
+                    SetDictionary(shortV, false);
             }
 
-            if (!str.Contains(vowelComparer))
-                return val += 0;
+            if (all)
+                AllMode(shortV);
 
             foreach (var fpath in paths)
             {
                 if (File.Exists(path + fpath.path) && fpath.enable)
                 {
+                    if (all)                    
+                        SetActiveVowel(fpath.path);
+
                     foreach (var e in File.ReadLines(path + fpath.path))
                     {
                         if (!String.IsNullOrEmpty(e))
                         {
-                            int strLen = str.Length;
-                            string cutE = string.Empty;
+                            for (int i = 0; i < e.Length; i++)
+                            {
+                                var startVow = string.Empty;
+                                var midVow = string.Empty;
+                                var endVow = string.Empty;
 
-                            if (e.Length > strLen)
-                            {
-                                cutE = e[0..strLen];
-                            }
-                            else
-                            {
-                                cutE = e;
-                            }
-                            for (int i = 0; i < cutE.Length; i++)
-                            {
-                                if (i + ybounds <= cutE.Length - 1)
+                                if (i + vbounds <= e.Length - 1)
                                 {
-                                    //this seems unnecessary, but it needs to skip the middel single character
-                                    var yy = cutE[i + (ybounds - ybounds)] + " " + cutE[i + ybounds];
+                                    string tmpThree = string.Empty;
 
-                                    Console.WriteLine(yy[0] + "|||||||||||||||" + cutE[i + ybounds]);
-
-                                    if (str[i] == yy[0] && str[i + ybounds] == yy[ybounds])
-                                        val += 0.2;
-                                }
-
-                                if (i + vbounds <= cutE.Length - 1)
-                                {
-                                    var sInput = str.Substring(i, vbounds);
-                                    var sDict = cutE.Substring(i, vbounds);
-
-                                    Console.WriteLine("AA : " + sInput);
-                                    Console.WriteLine("BB : " + sDict);
-
-                                    if (sInput.Contains(vowelComparer, sc) && sDict.Contains(vowelComparer, sc) && sInput.Equals(sDict, sc))
+                                    if (i + vbounds <= e.Length - 1)
                                     {
-                                        val += 0.2;
-                                        Console.WriteLine("+3 sequence matching : " + sDict);
+                                        tmpThree = e.Substring(i, vbounds);
+
+                                        if (tmpThree[0] == vowelComparer[0]) startVow = tmpThree;
+                                        else if (tmpThree[1] == vowelComparer[0]) midVow = tmpThree;
+                                        else if (tmpThree[2] == vowelComparer[0]) endVow = tmpThree;
                                     }
-                                }
-                                else
-                                {
-                                    val += 0;
+
+                                    if (!String.IsNullOrEmpty(startVow) || !String.IsNullOrEmpty(midVow) || !String.IsNullOrEmpty(endVow))
+                                    {
+                                        //For fun
+                                        List<string> fxx = new List<string>(str.Length);
+                                        for (int t = 0; t < str.Length; t++)
+                                        {
+                                            if (t + vbounds <= str.Length - 1 && !String.IsNullOrEmpty(tmpThree))
+                                            {
+                                                var tt = str.Substring(t, vbounds);
+
+                                                if (!String.IsNullOrEmpty(startVow) && startVow.Equals(tt))
+                                                {
+                                                    val += 0.2;
+                                                    Console.WriteLine("Start vowel +3 : " + tt + " =============> START");
+                                                }
+                                                else if (!String.IsNullOrEmpty(midVow) && midVow.Equals(tt))
+                                                {
+                                                    val += 0.2;
+                                                    Console.WriteLine("Middle vowel +3 : " + tt + " =============> MID");
+                                                }
+                                                else if (!String.IsNullOrEmpty(endVow) && endVow.Equals(tt))
+                                                {
+                                                    val += 0.2;
+                                                    Console.WriteLine("Last vowel +3 : " + tt + " =============> LAST");
+                                                }
+                                                else
+                                                {
+                                                    //NOT FOUND
+                                                    fxx.Add("===");
+                                                    var f = String.Join("", fxx);
+                                                    Console.WriteLine("Middle vowel +3 : " + tt + " " + f + "mismatch!");
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -123,14 +160,13 @@ namespace VVowels
                     }
                 }
             }
-
-            DefaultStat();
             return val / (double)100;
         }
 
         private void DefaultStat()
         {
-            vbounds = 2;
+            counta = 0;
+            vbounds = 3;
             ybounds = 2;
             vowelComparer = string.Empty;
 
@@ -142,7 +178,7 @@ namespace VVowels
             }
         }
 
-        private void PoolDictionary()
+        private void PoolDictionary(ShortVo shortV, [Optional] bool all)
         {
             LVClass lvc = new LVClass();
 
@@ -162,55 +198,68 @@ namespace VVowels
                     paths.Add(newInst);
                 }
             }
+            SetDictionary(shortV);
         }
-        private void SetDictionary(ShortVo shortV)
+        private void SetDictionary(ShortVo shortV, [Optional] bool all)
         {
-            for (var f = 0; f < paths.Count; f++)
+            if (!all)
             {
-                if (shortV == ShortVo.A)
+                for (var f = 0; f < paths.Count; f++)
                 {
-                    if (paths[f].path.Contains("short-a.txt"))
+
+                    if (shortV == ShortVo.A)
                     {
-                        (string estring, bool ebool) esb = (paths[f].path, true);
-                        paths[f] = esb;
-                        vowelComparer = "a";
+                        if (paths[f].path.Contains("short-a.txt"))
+                        {
+                            (string estring, bool ebool) esb = (paths[f].path, true);
+                            paths[f] = esb;
+                            vowelComparer = "a";
+                        }
+                    }
+                    else if (shortV == ShortVo.I)
+                    {
+                        if (paths[f].path.Contains("short-i.txt"))
+                        {
+                            (string estring, bool ebool) esb = (paths[f].path, true);
+                            paths[f] = esb;
+                            vowelComparer = "i";
+                        }
+                    }
+                    else if (shortV == ShortVo.U)
+                    {
+                        if (paths[f].path.Contains("short-u.txt"))
+                        {
+                            (string estring, bool ebool) esb = (paths[f].path, true);
+                            paths[f] = esb;
+                            vowelComparer = "u";
+                        }
+                    }
+                    else if (shortV == ShortVo.E)
+                    {
+                        if (paths[f].path.Contains("short-e.txt"))
+                        {
+                            (string estring, bool ebool) esb = (paths[f].path, true);
+                            paths[f] = esb;
+                            vowelComparer = "e";
+                        }
+                    }
+                    else if (shortV == ShortVo.O)
+                    {
+                        if (paths[f].path.Contains("short-o.txt"))
+                        {
+                            (string estring, bool ebool) esb = (paths[f].path, true);
+                            paths[f] = esb;
+                            vowelComparer = "o";
+                        }
                     }
                 }
-                else if (shortV == ShortVo.I)
+            }
+            else
+            {
+                for (int i = 0; i < paths.Count; i++)
                 {
-                    if (paths[f].path.Contains("short-i.txt"))
-                    {
-                        (string estring, bool ebool) esb = (paths[f].path, true);
-                        paths[f] = esb;
-                        vowelComparer = "i";
-                    }
-                }
-                else if (shortV == ShortVo.U)
-                {
-                    if (paths[f].path.Contains("short-u.txt"))
-                    {
-                        (string estring, bool ebool) esb = (paths[f].path, true);
-                        paths[f] = esb;
-                        vowelComparer = "u";
-                    }
-                }
-                else if (shortV == ShortVo.E)
-                {
-                    if (paths[f].path.Contains("short-e.txt"))
-                    {
-                        (string estring, bool ebool) esb = (paths[f].path, true);
-                        paths[f] = esb;
-                        vowelComparer = "e";
-                    }
-                }
-                else if (shortV == ShortVo.O)
-                {
-                    if (paths[f].path.Contains("short-o.txt"))
-                    {
-                        (string estring, bool ebool) esb = (paths[f].path, true);
-                        paths[f] = esb;
-                        vowelComparer = "o";
-                    }
+                    (string estring, bool ebool) esb = (paths[i].path, true);
+                    paths[i] = esb;
                 }
             }
         }
