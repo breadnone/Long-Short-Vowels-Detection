@@ -85,16 +85,15 @@ namespace VVowels
                 {
                     if (all)
                     {
-                        if (fpath.path.Contains("long-a.txt", sc))
-                            vowelComparer = "a";
-                        else if (fpath.path.Contains("long-i.txt", sc))
-                            vowelComparer = "i";
-                        else if (fpath.path.Contains("long-u.txt", sc))
-                            vowelComparer = "u";
-                        else if (fpath.path.Contains("long-e.txt", sc))
-                            vowelComparer = "e";
-                        else if (fpath.path.Contains("long-o.txt", sc))
-                            vowelComparer = "o";
+                        vowelComparer = (fpath.path) switch
+                        {
+                            var x when x.Contains("long-a.txt", sc) => "a",
+                            var x when x.Contains("long-i.txt", sc) => "i",
+                            var x when x.Contains("long-u.txt", sc) => "u",
+                            var x when x.Contains("long-e.txt", sc) => "e",
+                            var x when x.Contains("long-o.txt", sc) => "o",
+                            _ => vowelComparer = string.Empty
+                        };
                     }
 
                     foreach (var e in File.ReadLines(path + fpath.path))
@@ -115,18 +114,14 @@ namespace VVowels
                                     {
                                         tmpThree = e.Substring(i, vbounds);
 
-                                        if (tmpThree[0] == vowelComparer[0])
-                                            startVow = tmpThree;
-                                        else if (tmpThree[1] == vowelComparer[0])
-                                            midVow = tmpThree;
-                                        else if (tmpThree[2] == vowelComparer[0])
-                                            endVow = tmpThree;
+                                        if (tmpThree[0] == vowelComparer[0]) startVow = tmpThree;
+                                        else if (tmpThree[1] == vowelComparer[0]) midVow = tmpThree;
+                                        else if (tmpThree[2] == vowelComparer[0]) endVow = tmpThree;
                                     }
 
                                     if (!String.IsNullOrEmpty(startVow) || !String.IsNullOrEmpty(midVow) || !String.IsNullOrEmpty(endVow))
                                     {
                                         //For fun
-                                        int funCounter = 0;
                                         List<string> fxx = new List<string>(str.Length);
 
                                         for (int t = 0; t < str.Length; t++)
