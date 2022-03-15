@@ -15,8 +15,6 @@ namespace VVowels
 
             string vowType = string.Empty;
 
-            
-
             if(sVow.Contains("1"))
             {
                 Console.WriteLine("vowels of | a | i | u | e | o | to check? ");

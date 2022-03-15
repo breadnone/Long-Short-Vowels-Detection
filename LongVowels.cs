@@ -101,12 +101,12 @@ namespace VVowels
                     {
                         if (!String.IsNullOrEmpty(e))
                         {
-                            var startVow = string.Empty;
-                            var midVow = string.Empty;
-                            var endVow = string.Empty;
-
                             for (int i = 0; i < e.Length; i++)
                             {
+                                var startVow = string.Empty;
+                                var midVow = string.Empty;
+                                var endVow = string.Empty;
+
                                 if (i + vbounds <= e.Length - 1)
                                 {
                                     string tmpThree = string.Empty;
@@ -125,8 +125,9 @@ namespace VVowels
 
                                     if (!String.IsNullOrEmpty(startVow) || !String.IsNullOrEmpty(midVow) || !String.IsNullOrEmpty(endVow))
                                     {
+                                        //For fun
                                         int funCounter = 0;
-                                        List<string> fxx = new List<string>();
+                                        List<string> fxx = new List<string>(str.Length);
 
                                         for (int t = 0; t < str.Length; t++)
                                         {
@@ -138,40 +139,26 @@ namespace VVowels
                                                 {
                                                     val += 0.2;
                                                     Console.WriteLine("Start vowel +3 : " + tt + " =============> START");
-                                                    startVow = string.Empty;
-                                                    midVow = string.Empty;
-                                                    endVow = string.Empty;
-                                                    tmpThree = string.Empty;
                                                 }
                                                 else if (!String.IsNullOrEmpty(midVow) && midVow.Equals(tt))
                                                 {
                                                     val += 0.2;
                                                     Console.WriteLine("Middle vowel +3 : " + tt + " =============> MID");
-                                                    startVow = string.Empty;
-                                                    midVow = string.Empty;
-                                                    endVow = string.Empty;
-                                                    tmpThree = string.Empty;
                                                 }
                                                 else if (!String.IsNullOrEmpty(endVow) && endVow.Equals(tt))
                                                 {
                                                     val += 0.2;
                                                     Console.WriteLine("Last vowel +3 : " + tt + " =============> LAST");
-                                                    startVow = string.Empty;
-                                                    midVow = string.Empty;
-                                                    endVow = string.Empty;
-                                                    tmpThree = string.Empty;
                                                 }
                                                 else
                                                 {
                                                     //NOT FOUND
-                                                    funCounter++;
                                                     fxx.Add("===");
                                                     var f = String.Join("", fxx);
                                                     Console.WriteLine("Middle vowel +3 : " + tt + " " + f + "mismatch!");
                                                 }
                                             }
                                         }
-                                        funCounter = 0;
                                     }
                                 }
                             }
