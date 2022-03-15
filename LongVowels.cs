@@ -101,21 +101,19 @@ namespace VVowels
                     {
                         if (!String.IsNullOrEmpty(e))
                         {
-                            string cutE = e;
-
                             var startVow = string.Empty;
                             var midVow = string.Empty;
                             var endVow = string.Empty;
 
-                            for (int i = 0; i < cutE.Length; i++)
+                            for (int i = 0; i < e.Length; i++)
                             {
-                                if (i + vbounds <= cutE.Length - 1)
+                                if (i + vbounds <= e.Length - 1)
                                 {
                                     string tmpThree = string.Empty;
 
-                                    if (i + vbounds <= cutE.Length - 1)
+                                    if (i + vbounds <= e.Length - 1)
                                     {
-                                        tmpThree = cutE.Substring(i, vbounds);
+                                        tmpThree = e.Substring(i, vbounds);
 
                                         if (tmpThree[0] == vowelComparer[0])
                                             startVow = tmpThree;
@@ -125,9 +123,11 @@ namespace VVowels
                                             endVow = tmpThree;
                                     }
 
-                                    Console.WriteLine("==========> MID : " + midVow);
                                     if (!String.IsNullOrEmpty(startVow) || !String.IsNullOrEmpty(midVow) || !String.IsNullOrEmpty(endVow))
                                     {
+                                        int funCounter = 0;
+                                        List<string> fxx = new List<string>();
+
                                         for (int t = 0; t < str.Length; t++)
                                         {
                                             if (t + vbounds <= str.Length - 1 && !String.IsNullOrEmpty(tmpThree))
@@ -139,24 +139,39 @@ namespace VVowels
                                                     val += 0.2;
                                                     Console.WriteLine("Start vowel +3 : " + tt + " =============> START");
                                                     startVow = string.Empty;
+                                                    midVow = string.Empty;
+                                                    endVow = string.Empty;
                                                     tmpThree = string.Empty;
                                                 }
                                                 else if (!String.IsNullOrEmpty(midVow) && midVow.Equals(tt))
                                                 {
                                                     val += 0.2;
                                                     Console.WriteLine("Middle vowel +3 : " + tt + " =============> MID");
+                                                    startVow = string.Empty;
                                                     midVow = string.Empty;
+                                                    endVow = string.Empty;
                                                     tmpThree = string.Empty;
                                                 }
                                                 else if (!String.IsNullOrEmpty(endVow) && endVow.Equals(tt))
                                                 {
                                                     val += 0.2;
                                                     Console.WriteLine("Last vowel +3 : " + tt + " =============> LAST");
+                                                    startVow = string.Empty;
+                                                    midVow = string.Empty;
                                                     endVow = string.Empty;
                                                     tmpThree = string.Empty;
                                                 }
+                                                else
+                                                {
+                                                    //NOT FOUND
+                                                    funCounter++;
+                                                    fxx.Add("===");
+                                                    var f = String.Join("", fxx);
+                                                    Console.WriteLine("Middle vowel +3 : " + tt + " " + f + "mismatch!");
+                                                }
                                             }
                                         }
+                                        funCounter = 0;
                                     }
                                 }
                             }
