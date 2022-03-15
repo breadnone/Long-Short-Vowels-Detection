@@ -76,17 +76,17 @@ namespace VVowels
                     SetDictionary(longV, false);
             }
 
-            if(all)
-            AllMode(longV);
+            if (all)
+                AllMode(longV);
 
             foreach (var fpath in paths)
             {
                 if (File.Exists(path + fpath.path) && fpath.enable)
                 {
-                    if(all)
+                    if (all)
                     {
-                        if (fpath.path.Contains("long-a.txt", sc))                    
-                            vowelComparer = "a";                    
+                        if (fpath.path.Contains("long-a.txt", sc))
+                            vowelComparer = "a";
                         else if (fpath.path.Contains("long-i.txt", sc))
                             vowelComparer = "i";
                         else if (fpath.path.Contains("long-u.txt", sc))
@@ -101,41 +101,61 @@ namespace VVowels
                     {
                         if (!String.IsNullOrEmpty(e))
                         {
-                            int strLen = str.Length;
-                            string cutE = string.Empty;
+                            string cutE = e;
 
-                            if (e.Length > strLen)
-                            {
-                                cutE = e[0..strLen];
-                            }
-                            else
-                            {
-                                cutE = e;
-                            }
+                            var startVow = string.Empty;
+                            var midVow = string.Empty;
+                            var endVow = string.Empty;
+
                             for (int i = 0; i < cutE.Length; i++)
                             {
                                 if (i + vbounds <= cutE.Length - 1)
                                 {
-                                    var sInput = str.Substring(i, vbounds);
-                                    var sDict = cutE.Substring(i, vbounds);
+                                    string tmpThree = string.Empty;
 
-                                    var midVow = char.ToLower(sInput[1]);
+                                    if (i + vbounds <= cutE.Length - 1)
+                                    {
+                                        tmpThree = cutE.Substring(i, vbounds);
+
+                                        if (tmpThree[0] == vowelComparer[0])
+                                            startVow = tmpThree;
+                                        else if (tmpThree[1] == vowelComparer[0])
+                                            midVow = tmpThree;
+                                        else if (tmpThree[2] == vowelComparer[0])
+                                            endVow = tmpThree;
+                                    }
 
                                     Console.WriteLine("==========> MID : " + midVow);
-                                    Console.WriteLine("IN : " + sInput);
-                                    Console.WriteLine("OU : " + sDict);
-
-                                    if (midVow == vowelComparer[0])
+                                    if (!String.IsNullOrEmpty(startVow) || !String.IsNullOrEmpty(midVow) || !String.IsNullOrEmpty(endVow))
                                     {
-                                        if (sInput[0] == sDict[0])
+                                        for (int t = 0; t < str.Length; t++)
                                         {
-                                            val += 0.2;
-                                            Console.WriteLine("+3 sequence matching : " + sDict);
-                                        }
-                                        else
-                                        {
-                                            val += 0.05;
-                                            Console.WriteLine("+3 sequence matching : " + sDict);
+                                            if (t + vbounds <= str.Length - 1 && !String.IsNullOrEmpty(tmpThree))
+                                            {
+                                                var tt = str.Substring(t, vbounds);
+
+                                                if (!String.IsNullOrEmpty(startVow) && startVow.Equals(tt))
+                                                {
+                                                    val += 0.2;
+                                                    Console.WriteLine("Start vowel +3 : " + tt + " =============> START");
+                                                    startVow = string.Empty;
+                                                    tmpThree = string.Empty;
+                                                }
+                                                else if (!String.IsNullOrEmpty(midVow) && midVow.Equals(tt))
+                                                {
+                                                    val += 0.2;
+                                                    Console.WriteLine("Middle vowel +3 : " + tt + " =============> MID");
+                                                    midVow = string.Empty;
+                                                    tmpThree = string.Empty;
+                                                }
+                                                else if (!String.IsNullOrEmpty(endVow) && endVow.Equals(tt))
+                                                {
+                                                    val += 0.2;
+                                                    Console.WriteLine("Last vowel +3 : " + tt + " =============> LAST");
+                                                    endVow = string.Empty;
+                                                    tmpThree = string.Empty;
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -246,7 +266,7 @@ namespace VVowels
                 for (int i = 0; i < paths.Count; i++)
                 {
                     (string estring, bool ebool) esb = (paths[i].path, true);
-                    paths[i] = esb;                    
+                    paths[i] = esb;
                 }
             }
         }
