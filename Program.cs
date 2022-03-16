@@ -15,43 +15,39 @@ namespace VVowels
             Console.WriteLine("Check for Long Vowel(1) OR Short Vowel(2)");
             sVow = Console.ReadLine();
 
-            if(sVow.Contains("1"))
-            {
+            if (sVow.Contains("1"))
                 longVowel = true;
-            }
+            else
+                longVowel = false;
 
-            if(longVowel)
+            Console.WriteLine("Single(1) or ALL(2) Vowels?");
+            sVow = Console.ReadLine();
+            string vowType = string.Empty;
+            string inputStr = string.Empty;
+
+            if (longVowel)
             {
-                Console.WriteLine("Single(1) or ALL(2) Vowels?");
-                string sVow = Console.ReadLine();
 
-                string vowType = string.Empty;
-
-                if(sVow.Contains("1"))
+                if (sVow.Contains("1"))
                 {
                     Console.WriteLine("vowels of | a | i | u | e | o | to check? ");
                     vowType = Console.ReadLine();
                 }
-                else
+                if (sVow.Contains("2"))
                 {
                     all = true;
                     Console.WriteLine("Set for all vowels!");
                 }
 
                 Console.WriteLine("Enter english phrases :");
-                string inputStr = Console.ReadLine();
+                inputStr = Console.ReadLine();
 
-                if(!String.IsNullOrEmpty(inputStr))
-                    DetectLongVowels(inputStr, vowType);
+                if (!String.IsNullOrEmpty(inputStr))
+                    DetectVowels(inputStr, vowType);
             }
             else
             {
-                Console.WriteLine("Single(1) or ALL(2) Vowels?");
-                string sVow = Console.ReadLine();
-
-                string vowType = string.Empty;
-
-                if(sVow.Contains("1"))
+                if (sVow.Contains("1"))
                 {
                     Console.WriteLine("vowels of | a | i | u | e | o | to check? ");
                     vowType = Console.ReadLine();
@@ -63,73 +59,61 @@ namespace VVowels
                 }
 
                 Console.WriteLine("Enter english phrases :");
-                string inputStr = Console.ReadLine();
+                inputStr = Console.ReadLine();
 
-                if(!String.IsNullOrEmpty(inputStr))
-                    DetectLongVowels(inputStr, vowType);
+                if (!String.IsNullOrEmpty(inputStr))
+                    DetectVowels(inputStr, vowType);
             }
         }
 
-        public static void DetectLongVowels(string str, string vow)
+        public static void DetectVowels(string str, string vow)
         {
             //Note
             //results may vary depends on how many datas in a dictionary
             //Either way must be compared vice-versa for both Long and Short vowels
             var t = new LongVowels();
-            var s = new ShortVowels();
             var lv = LongVo.A;
-            var sv = ShortVo.A;
 
-            if(longVowel)
+            if (longVowel)
             {
-                //LongVo.I, LongVo.A, LongVo.O, LongVo.E, LongVo.U
-                
-                if(vow.Equals("a"))
+                if (vow.Equals("a"))
                     lv = LongVo.A;
-                if(vow.Equals("i"))
+                if (vow.Equals("i"))
                     lv = LongVo.I;
-                if(vow.Equals("u"))
+                if (vow.Equals("u"))
                     lv = LongVo.U;
-                if(vow.Equals("e"))
+                if (vow.Equals("e"))
                     lv = LongVo.E;
-                if(vow.Equals("o"))
+                if (vow.Equals("o"))
                     lv = LongVo.O;
             }
-            else
-            {
-                //ShortVo.I, ShortVo.A, ShortVo.O, ShortVo.E, ShortVo.U
-                
-                if(vow.Equals("a"))
-                    sv = ShortVo.A;
-                if(sv.Equals("i"))
-                    sv = ShortVo.I;
-                if(vow.Equals("u"))
-                    sv = ShortVo.U;
-                if(vow.Equals("e"))
-                    sv = ShortVo.E;
-                if(vow.Equals("o"))
-                    sv = ShortVo.O;
-            }
+
             var result = (0.0, string.Empty);
-
-            if(!all)
+            
+            if (longVowel)
             {
-                if(longVowel)
-                    result = t.VLongVowel(str, lv);
-                else
-                    result = s.VShortVowel(str, sv);
+                t.isLong = true;
             }
             else
             {
-                if(longVowel)
-                    result = t.VLongVowel(str, lv, all);
-                else
-                    result = s.VShortVowel(str, sv, all);
+                t.isLong = false;
             }
 
-            Console.WriteLine("==> Long Vowel");
+            if (!all)
+            {
+                result = t.VLongVowel(str, lv);
+            }
+            else
+            {
+                result = t.VLongVowel(str, lv, all);
+            }
 
-            if(!all)
+            if (longVowel)
+                Console.WriteLine("==> Long Vowel");
+            else
+                Console.WriteLine("==> Short Vowel");
+
+            if (!all)
                 Console.WriteLine("==> Check for vowel type : " + lv);
             else
                 Console.WriteLine("==> Check for ALL Vowels");
@@ -139,6 +123,6 @@ namespace VVowels
             all = false;
             longVowel = false;
             sVow = string.Empty;
-        } 
+        }
     }
 }
