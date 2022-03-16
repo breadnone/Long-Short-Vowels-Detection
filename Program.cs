@@ -89,15 +89,11 @@ namespace VVowels
             }
 
             var result = (0.0, string.Empty);
-            
-            if (longVowel)
-            {
+
+            if (longVowel)            
                 t.isLong = true;
-            }
-            else
-            {
+            else            
                 t.isLong = false;
-            }
 
             if (!all)
             {

@@ -125,13 +125,19 @@ namespace VVowels
                                     string tmpThree = string.Empty;
                                     tmpThree = e.Substring(i, vbounds);
 
-                                    if(!tmpThree.Contains("") || !tmpThree.Contains(" ") || tmpThree != null)
+                                    Console.WriteLine(vowelComparer);
+
+                                    if(!String.IsNullOrEmpty(tmpThree))
                                     {
                                         if (tmpThree[0] == vowelComparer[0]) startVow = tmpThree;
                                         else if (tmpThree[1] == vowelComparer[0]) midVow = tmpThree;
                                         else if (tmpThree[2] == vowelComparer[0]) endVow = tmpThree;
                                     }
-                                    
+                                    else
+                                    {
+                                        return val;
+                                    }
+
                                     if (!String.IsNullOrEmpty(startVow) || !String.IsNullOrEmpty(midVow) || !String.IsNullOrEmpty(endVow))
                                     {
                                         //For fun
@@ -227,31 +233,31 @@ namespace VVowels
             {
                 for (var f = 0; f < paths.Count; f++)
                 {
-                    if (longV == LongVo.A && paths[f].path.Contains(strr + "-a.txt"))
+                    if (longV == LongVo.A && paths[f].path.Contains(strr + "-a"))
                     {
                         (string estring, bool ebool) esb = (paths[f].path, true);
                         paths[f] = esb;
                         vowelComparer = "a";
                     }
-                    else if (longV == LongVo.I && paths[f].path.Contains(strr + "-i.txt"))
+                    else if (longV == LongVo.I && paths[f].path.Contains(strr + "-i"))
                     {
                         (string estring, bool ebool) esb = (paths[f].path, true);
                         paths[f] = esb;
                         vowelComparer = "i";
                     }
-                    else if (longV == LongVo.U && paths[f].path.Contains(strr + "-u.txt"))
+                    else if (longV == LongVo.U && paths[f].path.Contains(strr + "-u"))
                     {
                         (string estring, bool ebool) esb = (paths[f].path, true);
                         paths[f] = esb;
                         vowelComparer = "u";
                     }
-                    else if (longV == LongVo.E && paths[f].path.Contains(strr + "-e.txt"))
+                    else if (longV == LongVo.E && paths[f].path.Contains(strr + "-e"))
                     {
                         (string estring, bool ebool) esb = (paths[f].path, true);
                         paths[f] = esb;
                         vowelComparer = "e";
                     }
-                    else if (longV == LongVo.O && paths[f].path.Contains(strr + "-o.txt"))
+                    else if (longV == LongVo.O && paths[f].path.Contains(strr + "-o"))
                     {
                         (string estring, bool ebool) esb = (paths[f].path, true);
                         paths[f] = esb;
@@ -259,13 +265,36 @@ namespace VVowels
                     }
                 }
             }
-
             else
             {
                 for (int i = 0; i < paths.Count; i++)
                 {
-                    (string estring, bool ebool) esb = (paths[i].path, true);
-                    paths[i] = esb;
+                    if(isLong)
+                    {
+                        if(paths[i].path.Contains("long"))
+                        {
+                            (string estring, bool ebool) esb = (paths[i].path, true);
+                            paths[i] = esb;
+                        }
+                        else
+                        {
+                            (string estring, bool ebool) esb = (paths[i].path, false);
+                            paths[i] = esb;
+                        }
+                    }
+                    else
+                    {
+                        if(paths[i].path.Contains("short"))
+                        {
+                            (string estring, bool ebool) esb = (paths[i].path, true);
+                            paths[i] = esb;
+                        }
+                        else
+                        {
+                            (string estring, bool ebool) esb = (paths[i].path, false);
+                            paths[i] = esb;
+                        }
+                    }
                 }
             }
         }
