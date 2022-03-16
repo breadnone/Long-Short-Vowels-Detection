@@ -6,6 +6,8 @@ using System.Runtime.InteropServices;
 
 namespace VVowels
 {
+    //Believe me, I'm just being lazy here... like seriously XD
+    
     public class ShortVowels
     {
         private StringComparison sc = StringComparison.OrdinalIgnoreCase;
