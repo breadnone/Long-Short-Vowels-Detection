@@ -15,7 +15,7 @@ namespace VVowels
         private string path = Directory.GetCurrentDirectory() + "/dictionary/";
         public virtual int vbounds { get; set; } = 3;
         public virtual int ybounds { get; set; } = 2;
-        public bool isLong {get;set;}
+        public bool isLong { get; set; }
 
         public (double value, string vFormatValue) VLongVowel(string str, LongVo longV, [Optional] bool all)
         {
@@ -63,8 +63,8 @@ namespace VVowels
         public void SetActiveVowel(string strPath)
         {
             string strr = string.Empty;
-            
-            if(isLong)
+
+            if (isLong)
             {
                 isLong = true;
                 strr = "long";
@@ -74,16 +74,16 @@ namespace VVowels
                 isLong = false;
                 strr = "short";
             }
-            
-                vowelComparer = (strPath) switch
-                {
-                    var x when x.Contains(strr + "-a.txt", sc) => "a",
-                    var x when x.Contains(strr + "-i.txt", sc) => "i",
-                    var x when x.Contains(strr + "-u.txt", sc) => "u",
-                    var x when x.Contains(strr + "-e.txt", sc) => "e",
-                    var x when x.Contains(strr + "-o.txt", sc) => "o",
-                    _ => vowelComparer = string.Empty
-                };
+
+            vowelComparer = (strPath) switch
+            {
+                var x when x.Contains(strr + "-a.txt", sc) => "a",
+                var x when x.Contains(strr + "-i.txt", sc) => "i",
+                var x when x.Contains(strr + "-u.txt", sc) => "u",
+                var x when x.Contains(strr + "-e.txt", sc) => "e",
+                var x when x.Contains(strr + "-o.txt", sc) => "o",
+                _ => vowelComparer = string.Empty
+            };
 
         }
         public double LongVowel(string str, LongVo longV, bool all)
@@ -107,7 +107,7 @@ namespace VVowels
             {
                 if (File.Exists(path + fpath.path) && fpath.enable)
                 {
-                    if (all)                    
+                    if (all)
                         SetActiveVowel(fpath.path);
 
                     foreach (var e in File.ReadLines(path + fpath.path))
@@ -125,10 +125,13 @@ namespace VVowels
                                     string tmpThree = string.Empty;
                                     tmpThree = e.Substring(i, vbounds);
 
-                                    if (tmpThree[0] == vowelComparer[0]) startVow = tmpThree;
-                                    else if (tmpThree[1] == vowelComparer[0]) midVow = tmpThree;
-                                    else if (tmpThree[2] == vowelComparer[0]) endVow = tmpThree;                                    
-
+                                    if(!tmpThree.Contains("") || !tmpThree.Contains(" ") || tmpThree != null)
+                                    {
+                                        if (tmpThree[0] == vowelComparer[0]) startVow = tmpThree;
+                                        else if (tmpThree[1] == vowelComparer[0]) midVow = tmpThree;
+                                        else if (tmpThree[2] == vowelComparer[0]) endVow = tmpThree;
+                                    }
+                                    
                                     if (!String.IsNullOrEmpty(startVow) || !String.IsNullOrEmpty(midVow) || !String.IsNullOrEmpty(endVow))
                                     {
                                         //For fun
@@ -215,48 +218,48 @@ namespace VVowels
         {
             string strr = string.Empty;
 
-            if(isLong)
+            if (isLong)
                 strr = "long";
             else
                 strr = "short";
 
             if (!all)
             {
-                    for (var f = 0; f < paths.Count; f++)
+                for (var f = 0; f < paths.Count; f++)
+                {
+                    if (longV == LongVo.A && paths[f].path.Contains(strr + "-a.txt"))
                     {
-                        if (longV == LongVo.A && paths[f].path.Contains(strr + "-a.txt"))
-                        {
-                            (string estring, bool ebool) esb = (paths[f].path, true);
-                            paths[f] = esb;
-                            vowelComparer = "a";                        
-                        }
-                        else if (longV == LongVo.I && paths[f].path.Contains(strr + "-i.txt"))
-                        {
-                            (string estring, bool ebool) esb = (paths[f].path, true);
-                            paths[f] = esb;
-                            vowelComparer = "i";
-                        }
-                        else if (longV == LongVo.U && paths[f].path.Contains(strr + "-u.txt"))
-                        {
-                            (string estring, bool ebool) esb = (paths[f].path, true);
-                            paths[f] = esb;
-                            vowelComparer = "u";                        
-                        }
-                        else if (longV == LongVo.E && paths[f].path.Contains(strr + "-e.txt"))
-                        {
-                            (string estring, bool ebool) esb = (paths[f].path, true);
-                            paths[f] = esb;
-                            vowelComparer = "e";
-                        }
-                        else if (longV == LongVo.O && paths[f].path.Contains(strr + "-o.txt"))
-                        {
-                            (string estring, bool ebool) esb = (paths[f].path, true);
-                            paths[f] = esb;
-                            vowelComparer = "o";
-                        }
+                        (string estring, bool ebool) esb = (paths[f].path, true);
+                        paths[f] = esb;
+                        vowelComparer = "a";
                     }
+                    else if (longV == LongVo.I && paths[f].path.Contains(strr + "-i.txt"))
+                    {
+                        (string estring, bool ebool) esb = (paths[f].path, true);
+                        paths[f] = esb;
+                        vowelComparer = "i";
+                    }
+                    else if (longV == LongVo.U && paths[f].path.Contains(strr + "-u.txt"))
+                    {
+                        (string estring, bool ebool) esb = (paths[f].path, true);
+                        paths[f] = esb;
+                        vowelComparer = "u";
+                    }
+                    else if (longV == LongVo.E && paths[f].path.Contains(strr + "-e.txt"))
+                    {
+                        (string estring, bool ebool) esb = (paths[f].path, true);
+                        paths[f] = esb;
+                        vowelComparer = "e";
+                    }
+                    else if (longV == LongVo.O && paths[f].path.Contains(strr + "-o.txt"))
+                    {
+                        (string estring, bool ebool) esb = (paths[f].path, true);
+                        paths[f] = esb;
+                        vowelComparer = "o";
+                    }
+                }
             }
-            
+
             else
             {
                 for (int i = 0; i < paths.Count; i++)
