@@ -31,16 +31,20 @@ namespace VVowels
 
                 for (int i = 0; i < wordChuncks.Length; i++)
                 {
+                        var j = "LV = ";
+                        if(!isLong)
+                            j = "SV = ";
+
                     var v = LongVowel(wordChuncks[i], longV, all);
                     if (!all)
                     {
-                        formatt[i] = "LV = " + v.ToString("0.0000") + " || " + wordChuncks[i] + " || ";
+                        formatt[i] = j + v.ToString("0.0000") + " || " + wordChuncks[i] + " || ";
                         tValue += v;
                     }
                     else
                     {
                         dVlas[i] += v;
-                        formatt[i] = "LV = " + dVlas[i].ToString("0.0000") + " || " + wordChuncks[i] + " || ";
+                        formatt[i] = j + dVlas[i].ToString("0.0000") + " || " + wordChuncks[i] + " || ";
                     }
                 }
 
@@ -84,7 +88,6 @@ namespace VVowels
                 var x when x.Contains(strr + "-o.txt", sc) => "o",
                 _ => vowelComparer = string.Empty
             };
-
         }
         public double LongVowel(string str, LongVo longV, bool all)
         {
@@ -124,8 +127,6 @@ namespace VVowels
                                 {
                                     string tmpThree = string.Empty;
                                     tmpThree = e.Substring(i, vbounds);
-
-                                    Console.WriteLine(vowelComparer);
 
                                     if(!String.IsNullOrEmpty(tmpThree))
                                     {

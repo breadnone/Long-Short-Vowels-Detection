@@ -65,3 +65,10 @@ follow
 pillow
 arrow
 below
+robe
+hope
+mope
+coat
+note
+rote
+wrote
