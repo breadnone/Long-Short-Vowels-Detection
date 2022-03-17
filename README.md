@@ -3,7 +3,6 @@ A fun simple console app for long/short vowels detection made with .net.
   
   ![ZSg7STUOb0](https://user-images.githubusercontent.com/64100867/158159658-faddc50e-0036-4621-96f2-fe5d4ea47c86.gif)
 
-# NOTE! IT NEEDS MORE DATA FOR LONG & SHORT VOWELs!
 Needs more data or list of long/short vowels. Currently it's very limited.  
 Just copy the new data into dictionary in dictionary folder for each vowel
   
