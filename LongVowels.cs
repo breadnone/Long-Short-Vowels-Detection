@@ -151,17 +151,17 @@ namespace VVowels
 
                                                 if (!String.IsNullOrEmpty(startVow) && startVow.Equals(tt))
                                                 {
-                                                    val += 0.2;
+                                                    val += 0.25;
                                                     Console.WriteLine("Start vowel +3 : " + tt + " =============> START");
                                                 }
                                                 else if (!String.IsNullOrEmpty(midVow) && midVow.Equals(tt))
                                                 {
-                                                    val += 0.2;
+                                                    val += 0.25;
                                                     Console.WriteLine("Middle vowel +3 : " + tt + " =============> MID");
                                                 }
                                                 else if (!String.IsNullOrEmpty(endVow) && endVow.Equals(tt))
                                                 {
-                                                    val += 0.2;
+                                                    val += 0.15;
                                                     Console.WriteLine("Last vowel +3 : " + tt + " =============> LAST");
                                                 }
                                                 else
