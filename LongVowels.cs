@@ -31,11 +31,13 @@ namespace VVowels
 
                 for (int i = 0; i < wordChuncks.Length; i++)
                 {
-                        var j = "LV = ";
-                        if(!isLong)
-                            j = "SV = ";
+                    var j = "LV = ";
+
+                    if(!isLong)
+                        j = "SV = ";
 
                     var v = LongVowel(wordChuncks[i], longV, all);
+
                     if (!all)
                     {
                         formatt[i] = j + v.ToString("0.0000") + " || " + wordChuncks[i] + " || ";
@@ -177,6 +179,7 @@ namespace VVowels
                                 }
                             }
                         }
+
                         if (str.Equals(e, sc))
                             val += 0.4;
                     }
